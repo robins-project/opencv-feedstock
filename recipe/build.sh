@@ -23,7 +23,7 @@ if [ "$cuda_impl" == "cuda" ]; then
 fi
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
-export LDFLAGS="$LDFLAGS -fuse-ld=gold"
+export LDFLAGS="$LDFLAGS -L${PREFIX}/lib -fuse-ld=gold"
 
 mkdir -p build
 cd build
@@ -64,7 +64,6 @@ cmake -G "Ninja"                                                          \
     -DCMAKE_PREFIX_PATH=${PREFIX}                                         \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}                                      \
     -DCMAKE_INSTALL_LIBDIR="lib"                                          \
-    -DCMAKE_LIBRARY_PATH=${PREFIX}/lib                                    \
     $OPENMP                                                               \
     -DWITH_EIGEN=1                                                        \
     -DBUILD_TESTS=0                                                       \
