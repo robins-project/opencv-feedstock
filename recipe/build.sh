@@ -23,7 +23,7 @@ if [ "$cuda_impl" == "cuda" ]; then
 fi
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
-export LDFLAGS="$LDFLAGS -lmkl_rt -fuse-ld=gold"
+export LDFLAGS="$LDFLAGS -fuse-ld=gold"
 
 mkdir -p build
 cd build
@@ -58,12 +58,13 @@ PYTHON_UNSET_SP="-DPYTHON${PY_UNSET_MAJOR}_PACKAGES_PATH="
 # FFMPEG building requires pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PREFIX/lib/pkgconfig
 
-# cmake -G "$CMAKE_GENERATOR"                                               \
+# cmake -G "$CMAKE_GENERATOR"                                             \
 cmake -G "Ninja"                                                          \
     -DCMAKE_BUILD_TYPE="Release"                                          \
     -DCMAKE_PREFIX_PATH=${PREFIX}                                         \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}                                      \
     -DCMAKE_INSTALL_LIBDIR="lib"                                          \
+    -DCMAKE_LIBRARY_PATH=${PREFIX}/lib                                    \
     $OPENMP                                                               \
     -DWITH_EIGEN=1                                                        \
     -DBUILD_TESTS=0                                                       \
