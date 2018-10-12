@@ -16,10 +16,12 @@ if [ "${SHORT_OS_STR}" == "Darwin" ]; then
 fi
 
 CUDA="0"
+CUDA_DEFS=""
 if [ "$cuda_impl" == "cuda" ]; then
     CUDA="1"
     # build with c++11
     export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++[0-9][0-9]/-std=c++11/")
+    CUDA_DEFS="-DCUDA_NVCC_FLAGS:STRING=--expt-relaxed-constexpr"
 fi
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
@@ -79,6 +81,7 @@ cmake -G "Ninja"                                                          \
     -DBUILD_JAVA=0                                                        \
     -DBUILD_PROTOBUF=1                                                    \
     -DWITH_CUDA=$CUDA                                                     \
+    $CUDA_DEFS                                                            \
     -DWITH_OPENGL=1                                                       \
     -DWITH_OPENNI=0                                                       \
     -DWITH_FFMPEG=1                                                       \
