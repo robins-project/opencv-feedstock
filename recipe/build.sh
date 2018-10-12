@@ -19,7 +19,7 @@ CUDA="0"
 if [ "$cuda_impl" == "cuda" ]; then
     CUDA="1"
     # build with c++11
-    export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++17/-std=c++11/")
+    export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++[0-9][0-9]/-std=c++11/")
 fi
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
