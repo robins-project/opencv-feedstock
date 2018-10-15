@@ -20,7 +20,8 @@ CUDA_DEFS=""
 if [ "$cuda_impl" == "cuda" ]; then
     CUDA="1"
     # build with c++11
-    export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++[0-9][0-9]/-std=c++11/")
+    export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++[0-9][0-9]//")
+    export CXXFLAGS="$CXXFLAGS -std=c++11"
     CUDA_DEFS="-DCUDA_NVCC_FLAGS:STRING=--expt-relaxed-constexpr"
 fi
 export CFLAGS="$CFLAGS -idirafter /usr/include"

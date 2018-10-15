@@ -26,8 +26,8 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    # - {{ compiler('c') }}
+    # - {{ compiler('cxx') }}
     # Required to find ffpmeg
     - pkg-config                   # [not win]
     - cmake
@@ -80,8 +80,8 @@ requirements:
 
 test:
     requires:
-      - {{ compiler("c") }}
-      - {{ compiler("cxx") }}
+      # - {{ compiler("c") }}
+      # - {{ compiler("cxx") }}
       - requests
       - certifi
     files:
