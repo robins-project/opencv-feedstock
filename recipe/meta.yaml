@@ -36,8 +36,8 @@ requirements:
   host:
     - python
     - numpy
-    - hdf5
-    - eigen 3.2.*
+    - hdf5  {{ hdf5 }}
+    - eigen {{ eigen }}
     - jasper # [unix]
     # - openjpeg
     - zlib
@@ -47,19 +47,21 @@ requirements:
     - harfbuzz # [unix]
     - libpng
     - {{ blas_impl }}-devel
+    - tbb-devel
     - ffmpeg # [not win]
-    - qt
+    - qt {{ qt }}
     # - protobuf
     - tbb
     - glog
     # - gflags
+    - ceres {{ ceres }}
 
   run:
     - python
     # - {{ pin_compatible('numpy') }}
     - numpy
-    - hdf5
-    - eigen 3.2.*
+    - hdf5 {{ hdf5 }}
+    - eigen {{ eigen }}
     - jasper # [unix]
     # - openjpeg
     - zlib
@@ -69,12 +71,14 @@ requirements:
     - libtiff
     - libpng
     - {{ blas_impl }}-devel
+    - tbb-devel
     - ffmpeg # [not win]
-    - qt
+    - qt {{ qt }}
     # - protobuf
     - tbb
     - glog
     # - gflags
+    - ceres {{ ceres }}
     - feature_blas {{ feature_blas }} {{ blas_impl }}
     - feature_cuda {{ feature_cuda }} {{ cuda_impl }}
 
@@ -101,7 +105,7 @@ test:
             "core",
             "cudaarithm", # [cuda_impl == 'cuda']
             "cudabgsegm", # [cuda_impl == 'cuda']
-            "cudacodec", # [cuda_impl == 'cuda']
+            "cudacodec", # [cuda_impl == 'cuda' and feature_cuda.split('.')[0]|int < 10]
             "cudafeatures2d", # [cuda_impl == 'cuda']
             "cudafilters", # [cuda_impl == 'cuda']
             "cudaimgproc", # [cuda_impl == 'cuda']

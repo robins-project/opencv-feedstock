@@ -22,11 +22,19 @@ if [ "$cuda_impl" == "cuda" ]; then
     # build with c++11
     export CXXFLAGS=$(echo $CXXFLAGS | sed "s/-std=c++[0-9][0-9]//")
     export CXXFLAGS="$CXXFLAGS -std=c++11"
-    CUDA_DEFS="-DCUDA_NVCC_FLAGS:STRING=--expt-relaxed-constexpr"
+    CUDA_DEFS="-DCUDA_NVCC_FLAGS:STRING=--expt-relaxed-constexpr -DWITH_OPENCL=ON:BOOL=ON -DOPENCL_INCLUDE_DIR:PATH=$ROOT/include"
+
+    # NVCUVID is deprecated in CUDA 10. see https://docs.nvidia.com/cuda/video-decoder/index.html
+    # Disable build of opencv_cudacodec
+    re='^[0-9][0-9]'
+    if [[ $feature_cuda =~ $re ]]; then
+        CUDA_DEFS="$CUDA_DEFS -DBUILD_opencv_cudacodec:BOOL=OFF"
+    fi
 fi
+
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
-export LDFLAGS="$LDFLAGS -L${PREFIX}/lib -lmkl_rt -fuse-ld=gold"
+export LDFLAGS="$LDFLAGS -fuse-ld=gold"
 
 mkdir -p build
 cd build
@@ -61,7 +69,6 @@ PYTHON_UNSET_SP="-DPYTHON${PY_UNSET_MAJOR}_PACKAGES_PATH="
 # FFMPEG building requires pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PREFIX/lib/pkgconfig
 
-# cmake -G "$CMAKE_GENERATOR"                                             \
 cmake -G "Ninja"                                                          \
     -DCMAKE_BUILD_TYPE="Release"                                          \
     -DCMAKE_PREFIX_PATH=${PREFIX}                                         \
@@ -112,12 +119,8 @@ cmake -G "Ninja"                                                          \
     $PYTHON_UNSET_NUMPY                                                   \
     $PYTHON_UNSET_LIB                                                     \
     $PYTHON_UNSET_SP                                                      \
-    -DOPENGL_egl_LIBRARY=/usr/lib/x86_64-linux-gnu/libEGL.so              \
-    -DOPENGL_glu_LIBRARY=/usr/lib/x86_64-linux-gnu/libGLU.so              \
-    -DOPENGL_glx_LIBRARY=/usr/lib/x86_64-linux-gnu/libGLX.so              \
-    -DOPENGL_opengl_LIBRARY=/usr/lib/x86_64-linux-gnu/libOpenGL.so        \
-    -DOPENGL_gl_LIBRARY=/usr/lib/x86_64-linux-gnu/libGL.so                \
-    -D OpenGL_GL_PREFERENCE=GLVND                                         \
+    -DCMAKE_LIBRARY_ARCHITECTURE=x86_64-linux-gnu                         \
+    -DOpenGL_GL_PREFERENCE=GLVND                                          \
     ..
 
 ninja install
