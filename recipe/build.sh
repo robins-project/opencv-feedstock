@@ -69,6 +69,7 @@ PYTHON_UNSET_SP="-DPYTHON${PY_UNSET_MAJOR}_PACKAGES_PATH="
 # FFMPEG building requires pkgconfig
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PREFIX/lib/pkgconfig
 
+#    -DOpenGL_GL_PREFERENCE=GLVND                                          \
 cmake -G "Ninja"                                                          \
     -DCMAKE_BUILD_TYPE="Release"                                          \
     -DCMAKE_PREFIX_PATH=${PREFIX}                                         \
@@ -120,7 +121,6 @@ cmake -G "Ninja"                                                          \
     $PYTHON_UNSET_LIB                                                     \
     $PYTHON_UNSET_SP                                                      \
     -DCMAKE_LIBRARY_ARCHITECTURE=x86_64-linux-gnu                         \
-    -DOpenGL_GL_PREFERENCE=GLVND                                          \
     ..
 
 ninja install
