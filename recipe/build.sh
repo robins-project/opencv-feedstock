@@ -34,7 +34,7 @@ fi
 
 export CFLAGS="$CFLAGS -idirafter /usr/include"
 export CXXFLAGS="$CXXFLAGS -idirafter /usr/include"
-export LDFLAGS="$LDFLAGS -fuse-ld=gold"
+export LDFLAGS="$LDFLAGS -L${PREFIX}/lib -fuse-ld=gold"
 
 mkdir -p build
 cd build
